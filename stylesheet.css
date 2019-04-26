@@ -14,3 +14,47 @@ body{
     height: auto;
     width: auto;
 }
+
+#header{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#inputs{
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    height:auto
+}
+
+.tool{
+    margin-left: 30px;
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px 10px;
+    height: 20;
+}
+
+#run{
+    background-color: green;
+    padding: 5px 20px;
+    font-size: 20px;
+}
+
+#gridContainer{
+    width: 80%;
+    height: 500px;
+    border-style: solid;
+    border-width: 3px;
+    margin: 20px auto;
+    box-shadow: 30px;
+}
+
+.box{
+    box-shadow: 0px 0px 0px 1px black inset;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    float: left;
+}
