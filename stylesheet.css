@@ -47,7 +47,8 @@ body{
     height: 500px;
     border-style: solid;
     border-width: 3px;
-    margin: 20px auto;
+    margin: auto;
+    margin-bottom: 10px;
     box-shadow: 30px;
 }
 
@@ -57,4 +58,5 @@ body{
     padding: 0px;
     display: inline-block;
     float: left;
+    background-color: white;
 }

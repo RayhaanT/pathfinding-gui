@@ -1,12 +1,23 @@
 const runButton = document.querySelector("#run")
 const startButton = document.querySelector("#placeStart")
-const endButton = document.querySelector("#endStart")
-const wallButton = document.querySelector("#wallButton")
+const endButton = document.querySelector("#placeEnd")
+const wallButton = document.querySelector("#placeWalls")
+const removeButton = document.querySelector("#removeWalls")
+const clearButton = document.querySelector("#clear")
 const gridContainer = document.getElementById("gridContainer")
+runButton.addEventListener('click', runAlgorithm)
+startButton.addEventListener('click', setStart)
+endButton.addEventListener('click', setEnd)
+wallButton.addEventListener('click', placeWall)
+removeButton.addEventListener('click', removeWall)
+clearButton.addEventListener('click', clear)
 
 var boxSize = gridContainer.clientWidth/32
 
-generateGrid(32, 5)
+var boxColors = ["lightblue", "blue", "black", "red", "green", "white"]
+var tool = -1
+
+generateGrid(32, 18)
 
 function generateGrid(width, height) {
     if(width <= 32) {
@@ -17,12 +28,13 @@ function generateGrid(width, height) {
         gridContainer.style.width = boxSize*width + "px"
         console.log(boxSize)
     }
-    let ratio = height / width
     gridContainer.style.height = boxSize*height+"px"
 
     for(x = 0; x < width; x++) {
         for(y = 0; y < height; y++) {
             const newBox = document.createElement('div');
+			newBox.addEventListener('mouseover', setAttribute)
+			newBox.addEventListener('mousedown', setAttribute)
             newBox.className = "box"
             newBox.style.width = boxSize + "px";
             newBox.style.height = boxSize + "px";
@@ -31,6 +43,41 @@ function generateGrid(width, height) {
     }
 }
 
-window.onload = function(){
-    
+function setStart() {
+	tool = 0
+}
+
+function setEnd() {
+	tool = 1
+}
+
+function placeWall() {
+	tool = 2
+}
+
+function removeWall() {
+	tool = 5
+}
+
+function clear() {
+	boxes = gridContainer.childNodes
+
+	for(var i = 0; i < boxes.length; i++) {
+		boxes[i].style.backgroundColor = "white"
+	}
+}
+
+function setAttribute(evt) {
+	if(evt.buttons != 1 && evt.buttons != 3) { //If no button is clicked on hover
+		return
+	}
+    if(tool == -1) { //If no tool is selected
+        return
+	}
+	
+	this.style.backgroundColor = boxColors[tool]
+}
+
+function runAlgorithm() {
+
 }
