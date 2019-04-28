@@ -53,10 +53,31 @@ body{
 }
 
 .box{
+    position: relative;
     box-shadow: 0px 0px 0px 1px black inset;
     margin: 0px;
     padding: 0px;
     display: inline-block;
     float: left;
     background-color: white;
+}
+
+.gCost{
+    position: absolute;
+    width: inherit;
+    text-align: right;
+    color: black;
+}
+
+.hCost{
+    position: absolute;
+    margin: 0;
+    color: black;
+}
+
+.fCost{
+    position: absolute;
+    height: 0px;
+    bottom: 0;
+    color: black;
 }
