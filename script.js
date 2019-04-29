@@ -14,27 +14,29 @@ removeButton.addEventListener('click', removeWall)
 clearButton.addEventListener('click', clear)
 dimensionsButton.addEventListener('click', setDimensions)
 
-var boxSize = gridContainer.clientWidth/32
+var boxSize
+var width = 32;
 
 var boxColors = ["lightblue", "blue", "black", "red", "green", "white"]
 var tool = -1
 
 generateGrid(32, 18)
 
-function generateGrid(width, height) {
+function generateGrid(_width, height) {
+    width = _width
     if(width <= 32) {
+        boxSize = gridContainer.clientWidth/32
         gridContainer.style.width = width*boxSize + "px"
     } else {
         gridContainer.style.width = "80%"
         boxSize = Math.floor(gridContainer.clientWidth/width)
         gridContainer.style.width = boxSize*width + "px"
-        console.log(boxSize)
     }
     gridContainer.style.height = boxSize*height+"px"
 
     for(x = 0; x < width; x++) {
         for(y = 0; y < height; y++) {
-            createBox().id = x + " " + y
+            createBox().id = "i" + x + "-" + y
         }
     }
 }
@@ -76,11 +78,15 @@ function removeWall() {
 }
 
 function clear() {
+    //Reset colours
 	boxes = gridContainer.childNodes
-
 	for(var i = 0; i < boxes.length; i++) {
 		boxes[i].style.backgroundColor = "white"
-	}
+    }
+    
+    //Reset algo data
+    startPoint.oldPosition = -1
+    endPoint.oldPosition = -1
 }
 
 function setDimensions() {
@@ -106,14 +112,21 @@ function setAttribute(evt) {
 	if(evt.buttons != 1 && evt.buttons != 3) { //If no button is clicked on hover
 		return
 	}
-    if(tool == -1) { //If no tool is selected
-        return
+    if(tool == -1) { return; } //If no tool is selected 
+    if(tool == 0) { //If it is start position
+        startPoint.setPos(this.id)
+    }
+    if(tool == 1) {
+        endPoint.setPos(this.id)
     }
     
-    if(tool == 0) {
+    if(tool != 5) {
+        this.style.backgroundColor = boxColors[tool]
+    } else {
+        if(this.style.backgroundColor == "black") {
+            this.style.backgroundColor = boxColors[tool]
+        }
     }
-	
-	this.style.backgroundColor = boxColors[tool]
 }
 
 function runAlgorithm() {
