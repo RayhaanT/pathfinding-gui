@@ -34,9 +34,15 @@ function generateGrid(_width, height) {
     }
     gridContainer.style.height = boxSize*height+"px"
 
-    for(x = 0; x < width; x++) {
-        for(y = 0; y < height; y++) {
-            createBox().id = "i" + x + "-" + y
+    for(y = 0; y < height; y++) {
+        grid.push([])
+        for(x = 0; x < width; x++) {
+            let newNode = Object.assign({}, node)
+            newNode.boxDOM = createBox()
+            newNode.boxDOM.id = "i" + x + "-" + y
+            newNode.x = x
+            newNode.y = y
+            grid[y].push(newNode)
         }
     }
 }
@@ -52,9 +58,9 @@ function createBox() {
     let fCost = document.createElement('p')
     let gCost = document.createElement('p')
     let hCost = document.createElement('p')
-    fCost.className = "fCost"
-    gCost.className = "gCost"
-    hCost.className = "hCost"
+    fCost.className = "fCost"; fCost.id = "fCost"
+    gCost.className = "gCost"; gCost.id = "gCost"
+    hCost.className = "hCost"; hCost.id = "hCost"
     newBox.appendChild(fCost)
     newBox.appendChild(gCost)
     newBox.appendChild(hCost)
@@ -85,8 +91,17 @@ function clear() {
     }
     
     //Reset algo data
-    startPoint.oldPosition = -1
-    endPoint.oldPosition = -1
+    startPoint.position = -1
+    endPoint.position = -1
+    
+    for(var y = 0; y < grid.length; y++) {
+        for(var x = 0; x < grid[0].length; x++) {            
+            grid[y][x].walkable = true
+            grid[y][x].boxDOM.querySelector("#fCost").innerHTML = "";
+            grid[y][x].boxDOM.querySelector("#gCost").innerHTML = "";
+            grid[y][x].boxDOM.querySelector("#hCost").innerHTML = "";
+        } 
+    }
 }
 
 function setDimensions() {
@@ -113,14 +128,26 @@ function setAttribute(evt) {
 		return
 	}
     if(tool == -1) { return; } //If no tool is selected 
-    if(tool == 0) { //If it is start position
+    if(tool == 0) { //If start position
         startPoint.setPos(this.id)
     }
-    if(tool == 1) {
+    if(tool == 1) { //If end position
         endPoint.setPos(this.id)
     }
+    if(tool == 2) {
+        let id = this.id
+        newID = id.slice(1, id.length)
+        let coords = newID.split("-")
+        grid[coords[1]][coords[0]].walkable = false;
+    }
+    if(tool == 5) {
+        let id = this.id
+        newID = id.slice(1, id.length)
+        let coords = newID.split("-")
+        grid[coords[1]][coords[0]].walkable = true;
+    }
     
-    if(tool != 5) {
+    if(tool != 5) { //If not remove wall
         this.style.backgroundColor = boxColors[tool]
     } else {
         if(this.style.backgroundColor == "black") {
@@ -130,5 +157,12 @@ function setAttribute(evt) {
 }
 
 function runAlgorithm() {
-
+    if(startPoint.position == -1) {
+        alert("No start point is selected"); return;
+    }
+    if(endPoint.position == -1) {
+        alert("No end point is selected"); return;
+    }
+    
+    FindPath(startPoint.position, endPoint.position)
 }
