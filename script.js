@@ -51,6 +51,7 @@ function createBox() {
     const newBox = document.createElement('div');
     newBox.addEventListener('mouseover', setAttribute)
     newBox.addEventListener('mousedown', setAttribute)
+    newBox.addEventListener('touchmove', setAttribute)
     newBox.className = "box"
     newBox.style.width = boxSize + "px";
     newBox.style.height = boxSize + "px";
