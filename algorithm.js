@@ -82,6 +82,7 @@ function FindPath(startNode, targetNode) {
             for(var i = 0; i < gridPath.length; i++) {
                 visualizeNode(gridPath[i], "green")
             }    
+            visualizeNode(startNode, "green")
             return;
         }
         neighbours = getNeighbours(currentNode)
